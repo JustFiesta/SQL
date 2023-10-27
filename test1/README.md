@@ -23,4 +23,3 @@ WHERE data_zal IN (
 	UNION  
 	SELECT MAX(data_zal) FROM zaliczenia  s
 )
-
