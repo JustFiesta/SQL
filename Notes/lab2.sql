@@ -1,4 +1,4 @@
-/* Funkcje agregujące - z13 - z
+/* Funkcje agregujące - z13 - z20
 
 COUNT(*date kolumny do zliczania*)  - liczy wiersze z podanych kolumn
 GROUP BY - umożliwia rozgrupowanie danych i wyświetlenie nazw kolumn
@@ -116,3 +116,26 @@ FROM przedmioty P
 GROUP BY P.przedmiot_id, nazwa
 HAVING COUNT(*)!=COUNT(DISTINCT student_id)
 --having to kolejne narzędzie do filtrowania
+
+--z19
+SELECT W.wykladowca_id, imie, nazwisko, COUNT(Z.wykladowca_id)
+FROM zaliczenia Z
+	RIGHT JOIN wykladowcy W ON Z.wykladowca_id=W.wykladowca_id
+GROUP BY W.wykladowca_id, imie, nazwisko
+
+-- INSERT INTO wykladowcy (wykladowca_id, nazwisko, imie)
+-- VALUES (9999, 'Kowalski', 'Jan')
+
+--lub
+
+SELECT W.wykladowca_id, nazwisko, imie, X.LZ, COALESCE(X.LZ, 0)
+FROM
+	(SELECT wykladowca_id, COUNT(*) LZ
+	FROM zaliczenia
+	GROUP BY wykladowca_id) X
+RIGHT JOIN wykladowcy W ON X.wykladowca_id=W.wykladowca_id
+
+-- INSERT INTO wykladowcy (wykladowca_id, nazwisko, imie)
+-- VALUES (9999, 'Kowalski', 'Jan')
+
+-- zliczanie nulla - zastąp liczbą
